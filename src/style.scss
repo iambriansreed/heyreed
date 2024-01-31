@@ -11,7 +11,6 @@ sup {
     font-weight: normal;
     line-height: 1.5;
     font-weight: 400;
-    font-size: 16px;
 
     color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
@@ -27,27 +26,38 @@ sup {
     font-family: 'Sacramento', cursive;
 }
 
-/* Small devices such as large phones (640px and up) */
-/* Default */
-
-/* Medium devices such as tablets (768px and up) */
-@media only screen and (min-width: 768px) {
+/* Media Query for Mobile Devices */
+@media (max-width: 480px) {
     :root {
-        font-size: 14px;
+        font-size: 16px;
     }
 }
 
-/* Large devices such as laptops (1024px and up) */
-@media only screen and (min-width: 1024px) {
+/* Media Query for low resolution  Tablets, Ipads */
+@media (min-width: 481px) and (max-width: 767px) {
     :root {
-        font-size: 22px;
+        font-size: 20px;
     }
 }
 
-/* Largest devices such as desktops (1280px and up) */
-@media only screen and (min-width: 1280px) {
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 768px) and (max-width: 1024px) {
     :root {
-        font-size: 30px;
+        font-size: 24px;
+    }
+}
+
+/* Media Query for Laptops and Desktops */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    :root {
+        font-size: 28px;
+    }
+}
+
+/* Media Query for Large screens */
+@media (min-width: 1281px) {
+    :root {
+        font-size: 34px;
     }
 }
 
@@ -80,6 +90,7 @@ sup {
         letter-spacing: -0.25em;
         display: flex;
         flex-direction: column;
+
         > span:nth-child(1) {
             font-size: 5rem;
         }
