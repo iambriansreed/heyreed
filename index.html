@@ -11,23 +11,295 @@
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="robots" content="noindex" />
     </head>
-    <body>
+    <body class="apple">
         <div id="app">
-            <section>
-                <h1>
+            <header id="header" style="display: none">
+                <h1><a href="#welcome">Heather & Brian</a></h1>
+                <nav>
+                    <a href="#rsvp">RSVP</a>
+                </nav>
+            </header>
+            <section class="welcome" id="welcome">
+                <p class="date">09.06.2024</p>
+                <!-- <p class="date">September 6<sup>th</sup> 2024</p> -->
+
+                <p class="names">
                     <span>Heather</span>
-                    <span>and</span>
+                    <span class="and">&amp;</span>
                     <span>Brian</span>
-                </h1>
+                </p>
+                <p class="message">We're Getting Married!</p>
             </section>
-            <section>
-                <h2>
-                    <span>Please join us to <span>celebrate our wedding.</span></span>
-                    <span>September 6<sup>th</sup> 2024</span>
-                </h2>
+            <section class="invite-summary">
+                <p class="invite">
+                    Heather and Brian joyfully request the pleasure of your company as we unite two families
+                    in the presence of family and friends.
+                </p>
+                <p class="summary">
+                    <a href="#rsvp">Meet us at the park.</a><br />We are starting with the ceremony on the
+                    water then a short walk to the reception.
+                </p>
             </section>
-            <section>More information coming soon.</section>
+            <section class="schedule-venue">
+                <div class="content">
+                    <div class="schedule">
+                        <h2>When</h2>
+                        <p class="title">Friday, September 6, 2024</p>
+                        <p>5:30 PM - Ceremony</p>
+                        <p>6:30 PM - Reception</p>
+                        <p><a href="#rsvp">RSVP</a></p>
+                    </div>
+                    <div class="venue">
+                        <h2>Where</h2>
+                        <p class="title">Great Neck Park</p>
+                        <p>2513 Shorehaven Drive</p>
+                        <p>Virginia Beach, VA 23454</p>
+                        <p>
+                            <a
+                                id="map-link"
+                                href="https://maps.google.com/?q=2513+Shorehaven+Drive+23454"
+                                target="_blank"
+                                >Directions</a
+                            >
+                        </p>
+                    </div>
+                </div>
+                <a class="no-link" target="_blank" href="/map.png"
+                    ><img src="/map.png" alt="Great Neck Park"
+                /></a>
+            </section>
+            <section class="about">
+                <div class="content">
+                    <div class="text">
+                        <p>
+                            Heather and Brian met on Bumble in November 2022. Heather's patience paid off when
+                            Brian replied after three weeks, leading to a connection that sparked from their
+                            first coffee date. After their second date, they decided to exclusively
+                            <span>date each other.</span>
+                        </p>
+                        <p>
+                            Heather jokingly proposed in March 2023, and Brian followed with a ring a month
+                            later. Both previously married, their focus is on unifying their families. They
+                            are excited to celebrate their <span> wedding day with you!</span>
+                        </p>
+                    </div>
+                    <div class="polaroid">
+                        <img src="/us.png" alt="Heather and Brian" />
+                        <div class="caption">London - Dec '23</div>
+                    </div>
+                </div>
+            </section>
+            <section class="registry">
+                <h2>Registry</h2>
+
+                <div class="content">
+                    <p>
+                        Heather and Brian are excited to celebrate their wedding day with you. They are so
+                        grateful for your love and support. If you would like to give a gift, please consider
+                        donating to their favorite charities or contributing to their honeymoon fund.
+                    </p>
+
+                    <p>
+                        Donate to the
+                        <a target="_blank" href="https://donate.cancer.org/">American Cancer Society</a
+                        >.<br />In honor of Brian Hunt, Heather's first Brian, who passed away from cancer in
+                        2021.
+                    </p>
+                    <p>
+                        Donate to the
+                        <a
+                            target="_blank"
+                            href="https://vbrescuefoundation.networkforgood.com/projects/119113-giving-page"
+                        >
+                            Virginia Beach Rescue Foundation</a
+                        >.<br />Brian volunteers as an EMT as part of the Kempsville Rescue Squad.
+                    </p>
+                    <p>
+                        Donate to their honeymoon fund on
+                        <a target="_blank" href="https://venmo.com/u/Heather-Heying">Venmo</a>.
+                    </p>
+                </div>
+            </section>
+            <section class="rsvp" data-code="entry" data-attending="yes" id="rsvp">
+                <h2>RSVP</h2>
+                <main>
+                    <div class="form" id="code">
+                        <h4>Please enter the code from your invitation.</h4>
+                        <fieldset>
+                            <!-- <label for="code-input"></label> -->
+                            <search-input>
+                                <input
+                                    type="text"
+                                    id="code-input"
+                                    name="code-input"
+                                    maxlength="6"
+                                    minlength="6"
+                                    pattern="[a-zA-Z0-9]"
+                                    autocomplete="off"
+                                    value="123456"
+                                />
+                            </search-input>
+                            <p class="description error">
+                                Invalid code. Please try again. <svg-sad></svg-sad>
+                            </p>
+                        </fieldset>
+                        <p class="description">
+                            If you do not have a code, <br />please click&nbsp;
+                            <a href="#rsvp" data-go="code-skip"> I don't have the code. </a>
+                        </p>
+                    </div>
+                    <button type="button" class="btn-text" data-go="code-entry">I have the code.</button>
+                    <div class="submit-success">
+                        <h3>Thanks so much for RSVPing!</h3>
+                    </div>
+                    <form name="response" id="response" class="form" novalidate>
+                        <input type="hidden" name="code" />
+                        <div class="submitting">
+                            <div class="loading-ring">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <fieldset data-name-entry>
+                            <label for="name">Name</label>
+                            <input type="text" required id="name" name="name" autocomplete="off" />
+                            <p class="description error"><svg-sad></svg-sad> Name is a required field.</p>
+                        </fieldset>
+                        <h3 data-name-display>Hello <span></span>!</h3>
+                        <fieldset class="radios">
+                            <label for="attending">Will you be attending?</label>
+                            <div class="row">
+                                <label
+                                    ><input
+                                        type="radio"
+                                        name="attending"
+                                        value="yes"
+                                        data-go="attending-yes"
+                                        checked
+                                        required
+                                    />Yes<svg-circle></svg-circle>
+                                </label>
+                                <label
+                                    ><input
+                                        type="radio"
+                                        name="attending"
+                                        value="no"
+                                        data-go="attending-no"
+                                        required
+                                    />No<svg-circle></svg-circle>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <div data-group="attending-fields">
+                            <fieldset class="radios">
+                                <label for="guests">Number of Guests</label>
+                                <div class="row">
+                                    <label
+                                        ><input type="radio" name="guests" value="1" required />1<svg-circle2
+                                    /></label>
+                                    <label
+                                        ><input type="radio" name="guests" value="2" required />2<svg-circle2
+                                    /></label>
+                                    <label
+                                        ><input type="radio" name="guests" value="3" required />3<svg-circle2
+                                    /></label>
+                                    <label
+                                        ><input type="radio" name="guests" value="4" required />4<svg-circle2
+                                    /></label>
+                                    <label
+                                        ><input type="radio" name="guests" value="5" required />5<svg-circle2
+                                    /></label>
+                                </div>
+
+                                <p class="description error">
+                                    <svg-sad></svg-sad> Guest count is a required field.
+                                </p>
+                            </fieldset>
+
+                            <fieldset>
+                                <label for="email">Email <small>(optional)</small></label>
+                                <input type="email" id="email" name="email" autocomplete="off" />
+                                <p class="description error">
+                                    Please enter a valid email address. <svg-sad></svg-sad>
+                                </p>
+                            </fieldset>
+
+                            <fieldset data-open-spotify>
+                                <div class="disabled">
+                                    You need to enter the code from your RSVP to request a song.
+                                </div>
+                                <div class="enabled">
+                                    <label for="song">Song Request <small>(optional)</small></label>
+                                    <input
+                                        type="text"
+                                        id="song"
+                                        name="song"
+                                        autocomplete="off"
+                                        class="popup"
+                                    />
+                                    <input type="hidden" id="song_id" name="song_id" />
+                                    <p class="description" id="song-select-description">
+                                        Request a song for the reception
+                                    </p>
+                                    <p
+                                        class="description selected strong-shake"
+                                        id="song-select-selected"
+                                        style="display: none"
+                                    >
+                                        Oh yeah, that's an awesome song!
+                                    </p>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <fieldset>
+                            <label for="message">Message <small>(optional)</small></label>
+                            <textarea id="message" name="message" autocomplete="off"></textarea>
+                        </fieldset>
+
+                        <button type="submit" class="btn">Send RSVP <svg-send></svg-send></button>
+                    </form>
+                </main>
+            </section>
         </div>
+        <a-modal id="spotify">
+            <fieldset class="form">
+                <label for="song-search-input">Song Search</label>
+                <search-input>
+                    <svg-search></svg-search>
+                    <input
+                        type="text"
+                        id="song-search-input"
+                        name="song-search-input"
+                        autocomplete="off"
+                        minlength="3"
+                        placeholder="Name of the song or artist"
+                    />
+                </search-input>
+            </fieldset>
+            <div></div>
+            <p class="instructions" style="display: none">Select a song or search again.</p>
+            <div class="scrollable results"></div>
+            <p class="no-results" style="display: none">Couldn't find that, sorry. Try again!</p>
+            <p class="footer">
+                <small
+                    >Powered by Spotify
+                    <svg
+                        class="spotify"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                    >
+                        <path
+                            d="M19.098 10.638c-3.868-2.297-10.248-2.508-13.941-1.387-.593.18-1.22-.155-1.399-.748-.18-.593.154-1.22.748-1.4 4.239-1.287 11.285-1.038 15.738 1.605.533.317.708 1.005.392 1.538-.316.533-1.005.709-1.538.392zm-.126 3.403c-.272.44-.847.578-1.287.308-3.225-1.982-8.142-2.557-11.958-1.399-.494.15-1.017-.129-1.167-.623-.149-.495.13-1.016.624-1.167 4.358-1.322 9.776-.682 13.48 1.595.44.27.578.847.308 1.286zm-1.469 3.267c-.215.354-.676.465-1.028.249-2.818-1.722-6.365-2.111-10.542-1.157-.402.092-.803-.16-.895-.562-.092-.403.159-.804.562-.896 4.571-1.045 8.492-.595 11.655 1.338.353.215.464.676.248 1.028zm-5.503-17.308c-6.627 0-12 5.373-12 12 0 6.628 5.373 12 12 12 6.628 0 12-5.372 12-12 0-6.627-5.372-12-12-12z"
+                        />
+                    </svg>
+                </small>
+            </p>
+        </a-modal>
         <script type="module" src="/src/main.ts"></script>
     </body>
 </html>
