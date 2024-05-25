@@ -34,6 +34,11 @@ button {
     user-select: none;
 }
 
+em {
+    font-style: italic;
+    opacity: 0.85;
+}
+
 .full {
     position: absolute;
     inset: 0;
@@ -670,6 +675,7 @@ section.schedule-venue {
             flex-direction: row;
             flex: 1;
             gap: 5rem;
+            align-items: start;
         }
     }
 
