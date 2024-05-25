@@ -1,7 +1,9 @@
+const apiUrl = 'https://api.heyreed.com';
+
 export function codeLookup(code: string) {
     if (code.length !== 6) return null;
 
-    return fetch(`https://api.heyreed.com/rsvp-check?id=${code}`)
+    return fetch(`${apiUrl}/rsvp-check?id=${code}`)
         .then(async (response) => response?.json())
         .then((json) => (json.error ? null : json))
         .catch(() => null);
@@ -18,7 +20,7 @@ export async function submitRSVP(formData: {
     song_id: string;
 }) {
     try {
-        const response = await fetch('https://api.heyreed.com/rsvp-submit', {
+        const response = await fetch(`${apiUrl}/rsvp-submit`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +38,7 @@ export async function getSongResults(
     code: string,
     query: string
 ): Promise<{ name: string; artist: string; id: string }[]> {
-    return await fetch('https://api.heyreed.com/rsvp-song', {
+    return await fetch(`${apiUrl}/rsvp-song`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

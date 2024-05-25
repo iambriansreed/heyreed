@@ -9,7 +9,7 @@ export function qS<TElement extends HTMLElement = HTMLElement>(selector: string)
     if (!selector) return new HTMLElement() as TElement;
 
     if (!elements[selector]) elements[selector] = document.querySelector<TElement>(selector);
-    return elements[selector] as TElement;
+    return elements[selector] ? (elements[selector] as TElement) : null;
 }
 
 /**
@@ -30,7 +30,7 @@ export function on<T, E extends Event = Event>(
     listener: (e: E) => void
 ) {
     const element = typeof selector === 'string' ? qS(selector) : (selector as HTMLElement);
-    element.addEventListener(type as any, listener as any);
+    if (element) element.addEventListener(type as any, listener as any);
 }
 
 export function toggle(selector: string | HTMLElement, show?: boolean) {

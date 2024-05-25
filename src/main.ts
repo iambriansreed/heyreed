@@ -88,18 +88,9 @@ customElements.define(
 );
 
 generateSVGs({
-    sad: `<svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 467.276 467.276"
-    fill="currentColor"
->
-    <path d="M379.284 51.144C348.258 24.297 309.568 13.46 269.579 8.672 163.069-25.3 68.062 44.959 26.578 142.38c-44.712 105.002-23.435 222.217 73.516 287.698 98.98 66.846 235.022 39.369 310.942-48.627 82.985-96.177 62.505-248.732-31.752-330.307zM196.853 432.703c-56.157-7.993-110.636-42.543-139.091-91.805-25.438-44.047-25.225-99.203-13.82-147.312 17.527-73.96 70.566-140.71 139.886-156.686.104.005.193.035.297.035 24.943.739 51.291.782 77.045 3.567 2.438.764 4.875 1.523 7.333 2.42 4.058 1.48 7.611 1.29 10.582.071 27.787 4.677 54.319 13.579 76.957 31.392 50.079 39.405 76.479 110.461 75.032 172.696-2.721 117.308-123.1 201.435-234.221 185.622z" />
-    <path d="M169.279 211.913c23.28 0 23.28-36.104 0-36.104-23.28-.001-23.28 36.104 0 36.104zM293.832 213.715c23.287 0 23.287-36.102 0-36.102-23.277 0-23.277 36.102 0 36.102zM134.855 300.254c-17.034 15.935 8.549 41.411 25.532 25.527 43.302-40.497 99.102-44.783 142.351-1.803 16.524 16.422 42.062-9.1 25.527-25.532-57.345-56.979-135.789-52.074-193.41 1.808z" />
-</svg>`,
     circle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 600" fill="currentColor">
     <path d="M460.3 531c-106.7-3.3-217.2-12.7-315.6-56.5C88 448.7 32.7 394.4 37 327.8c3.2-36 29-64 53.5-88.3C191.8 144.2 332.1 108 465.9 86.2c164-25.2 332-22.5 495.8 2.7 15.7.9 175 34.4 136.2 49.7 73.3 30.4 139 103 86.1 181.7-32.6 46.3-85.7 73.2-135.4 97.6C963 457 870.8 479.5 779 498.6c-104.8 21.1-211.5 35-318.5 32.5Zm28.5-16.5c155.2 2.7 623.7-69.6 687.7-223.9 28.8-82.1-66-134.7-132.5-153a1727.2 1727.2 0 0 0-139-33.7c-6.6-1.8-18.7-1-17.8-10.6-216.3-22.4-493-11.6-689 89.6-56.6 31.2-163.8 103-138.7 178.2 13.4 45.7 52 79.2 94 98.8 105 45.6 222.2 53.2 335.3 54.6Z"></path>
 </svg>`,
-
     circle2: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="currentColor">
     <path d="M753.7 376.2c-8-61.2-39.1-117.5-73.6-167.8C607.5 111 479.5 60.9 359.8 78.3c-44 7.4-86.4 24.5-125.2 46.5-44.6 27.8-81.2 68-109.3 112a615 615 0 0 0-74.8 185.7C39.8 464 47 506.8 65.8 544.6c-5.8 4-.5 11.4 2.3 15.9 18.2 33.5 41.2 64.9 71.3 88.7 115.6 90 280.3 96 415 49.6C695 653.3 773.3 521.5 753.8 376.3Zm-239.5 316c-136.6 36.5-312.7 20.6-407.9-94.6 4-2.6 3.8-8.5 1.4-12.2-6.2-9.5-12-19.3-17.4-29.3a281 281 0 0 1-19.7-46.9C48.6 450.9 90.6 351 116 296c32.7-66.4 80.7-129.6 148-163.3a319 319 0 0 1 395.5 76.1c41.3 55 75.8 119.9 78.9 189.7 7.8 149-82 257.8-224.2 293.8Z"></path>
 </svg>`,
@@ -152,79 +143,82 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
         return;
     });
 
-    // code
-    (() => {
-        const codeForm = qS('#code')!;
-        const fieldset = codeForm.querySelector<HTMLElement>('fieldset')!;
-        const input = fieldset.querySelector<HTMLInputElement>('input')!;
+    const responseForm = document.forms.namedItem('response')!;
 
-        on(input, 'search', async () => {
-            input.classList.toggle('loading', true);
-            const codeResult = await codeLookup(input.value);
-            input.classList.toggle('loading', false);
-
-            fieldset.classList.toggle('hasError', !codeResult);
-
-            if (codeResult) {
-                window.location.href = '#rsvp';
-
-                statusGo('code-success');
-
-                qS('[data-name-display] span')!.innerText = codeResult.name;
-
-                Object.entries(codeResult).forEach(([key, value]) => {
-                    if (key === 'guests') return;
-                    const el = qS<HTMLInputElement>(`[name="${key}"]`);
-                    if (el) el.value = value as string;
-                });
-
-                const guestCount = codeResult.guests || codeResult.estimated_guests;
-                const guests = qS<HTMLInputElement>(`[name="guests"][value="${guestCount}"]`);
-                if (guests) guests.checked = true;
-            }
-        });
-    })();
-
-    // response
-    (() => {
-        const responseForm = document.forms.namedItem('response')!;
-
-        const guestsInput = qA<HTMLInputElement>('[name="guests"]');
-
-        on(responseForm, 'change', function (event) {
-            if ((event.target as HTMLInputElement)?.name === 'attending') {
-                guestsInput.forEach((el) => {
-                    el.required = responseForm['attending'].value === 'yes';
-                });
-                toggle('[data-group="attending-fields"]', responseForm['attending'].value === 'yes');
-            }
+    const responseFormOnUpdate = () => {
+        guestsInput.forEach((el) => {
+            el.required = responseForm['attending'].value === 'yes';
         });
 
-        on(responseForm, 'submit', (e) => {
-            e.preventDefault();
+        toggle('[data-group="attending-fields"]', responseForm['attending'].value === 'yes');
+    };
 
-            responseForm.classList.add('submitted');
+    const guestsInput = qA<HTMLInputElement>('[name="guests"]');
 
-            if (!responseForm.checkValidity()) {
-                return;
-            }
+    const codeFormField = qS<HTMLElement>('#code fieldset')!;
+    const codeFormInput = qS<HTMLInputElement>('#code input')!;
 
-            const formData: any = Object.fromEntries(new FormData(responseForm));
+    on(codeFormInput, 'search', async () => {
+        codeFormInput.classList.toggle('loading', true);
+        const codeResult = await codeLookup(codeFormInput.value);
+        codeFormInput.classList.toggle('loading', false);
 
-            rsvpContainer.classList.add('busy');
+        codeFormField.classList.toggle('hasError', !codeResult);
 
-            submitRSVP(formData).then((response) => {
-                rsvpContainer.classList.remove('busy');
+        if (codeResult) {
+            window.location.href = '#rsvp';
 
-                statusGo(response?.error ? 'submit-error' : 'submit-success');
-                console.log(response);
-            });
+            statusGo('code-success');
+
+            const { name, email, message, song, song_id, guests, estimated_guests, attending, code } =
+                codeResult;
+
+            qS('[data-name-display] span')!.innerText = name;
+
+            qS<HTMLInputElement>('[name="code"]')!.value = code;
+            qS<HTMLInputElement>('[name="email"]')!.value = email;
+            qS<HTMLInputElement>('[name="message"]')!.value = message;
+            qS<HTMLInputElement>('[name="name"]')!.value = name;
+            qS<HTMLInputElement>('[name="song"]')!.value = song;
+            qS<HTMLInputElement>('[name="song_id"]')!.value = song_id;
+
+            const guestCount = guests || estimated_guests;
+            const guestRadio = qS<HTMLInputElement>(`[name="guests"][value="${guestCount}"]`);
+            if (guestRadio) guestRadio.checked = true;
+
+            const attendingRadio = qS<HTMLInputElement>(`[name="attending"][value="${attending}"]`);
+            if (attendingRadio) attendingRadio.checked = true;
+
+            responseFormOnUpdate();
+        }
+    });
+
+    on(responseForm, 'change', responseFormOnUpdate);
+
+    on(responseForm, 'submit', (e) => {
+        e.preventDefault();
+
+        responseForm.classList.add('submitted');
+
+        if (!responseForm.checkValidity()) {
+            return;
+        }
+
+        const formData: any = Object.fromEntries(new FormData(responseForm));
+
+        rsvpContainer.classList.add('busy');
+
+        submitRSVP(formData).then((response) => {
+            rsvpContainer.classList.remove('busy');
+
+            statusGo(response?.error ? 'submit-error' : 'submit-success');
+            console.log(response);
         });
-    })();
+    });
 
     // song search
     (() => {
-        const openSpotify = qS('[data-open-spotify]');
+        const openSpotify = qS('[data-open-spotify]')!;
 
         on(openSpotify, 'click', () => {
             toggle('#spotify', true);
@@ -241,10 +235,10 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
         let results: { name: string; artist: string; id: string }[] = [];
         let resultsCancelled = false;
 
-        const resultsContainer = qS('#spotify .results');
-        const searchInput = qS<HTMLInputElement>('#song-search-input');
-        const instructions = qS('#spotify .instructions');
-        const noResults = qS('#spotify .no-results');
+        const resultsContainer = qS('#spotify .results')!;
+        const searchInput = qS<HTMLInputElement>('#song-search-input')!;
+        const instructions = qS('#spotify .instructions')!;
+        const noResults = qS('#spotify .no-results')!;
 
         on(searchInput, 'search', () => {
             handleSearch(searchInput.value.toLowerCase());
@@ -255,8 +249,8 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
             if (!button) return;
 
             const { name, artist, id } = results[Number(button.value)];
-            qS<HTMLInputElement>('#song').value = `${name} by ${artist}`;
-            qS<HTMLInputElement>('#song_id').value = id;
+            qS<HTMLInputElement>('#song')!.value = `${name} by ${artist}`;
+            qS<HTMLInputElement>('#song_id')!.value = id;
 
             toggle('#song-select-description', false);
             toggle('#song-select-selected', true);
@@ -282,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
 
             debouncedTimeout = setTimeout(async () => {
                 if (resultsCancelled) return;
-                const code = qS<HTMLInputElement>('[name="code"]').value;
+                const code = qS<HTMLInputElement>('[name="code"]')?.value || '';
                 results = await getSongResults(code, search);
                 searchInput?.classList.toggle('loading', false);
 
@@ -304,21 +298,4 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
     })();
 
     return;
-    setTimeout(function test() {
-        const actions = [
-            () => {
-                qS('#rsvp').scrollIntoView();
-            },
-            () => qA('[data-toggle-code]')[0].click(),
-            () => qS('[value="yes"]').click(),
-            () => qS('#song').click(),
-        ];
-        const int = setInterval(() => {
-            if (actions.length) actions.shift()!();
-            else {
-                clearInterval(int);
-                console.log('test done');
-            }
-        }, 500);
-    }, 1000);
 });
