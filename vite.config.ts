@@ -10,4 +10,7 @@ export default defineConfig({
             cert: fs.readFileSync('./.cert/cert.pem'),
         },
     },
+    build: {
+        assetsDir: '',
+    },
 });
