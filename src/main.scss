@@ -685,10 +685,10 @@ section.schedule-venue {
         box-shadow: 0 0.2rem 1.2rem rgba(0, 0, 0, 0.2);
         filter: grayscale(100%);
         transition: all 1s;
-        width: 100%;
+        width: auto;
 
         @media (min-width: 1024px) {
-            width: auto;
+            width: 70%;
         }
 
         &:hover {
