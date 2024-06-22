@@ -1,7 +1,7 @@
 const apiUrl = 'https://api.heyreed.com';
 
 export function codeLookup(code: string) {
-    if (code.length !== 6) return null;
+    if (code.length !== 4) return null;
 
     return fetch(`${apiUrl}/rsvp-check?id=${code}`)
         .then(async (response) => response?.json())

@@ -9,6 +9,7 @@ $green: rgb(73, 125, 17);
 $error: rgb(170, 0, 0);
 
 html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -778,7 +779,7 @@ section.rsvp {
             }
 
             search-input {
-                max-width: 16rem;
+                width: 12rem;
                 margin: auto;
             }
 
@@ -787,7 +788,7 @@ section.rsvp {
             }
 
             input[type='text'] {
-                text-align: left;
+                text-align: center;
                 text-transform: uppercase;
                 font-size: 2.5rem;
                 padding: 0.25rem 0.75rem;
