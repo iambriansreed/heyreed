@@ -63,7 +63,6 @@ customElements.define(
 
             const pattern = input.getAttribute('pattern');
             const maxlength = toNumber(input.getAttribute('maxlength'));
-            const minlength = toNumber(input.getAttribute('minlength')) || 3;
 
             if (pattern)
                 on(input, 'keydown', async (e: KeyboardEvent) => {
@@ -77,13 +76,6 @@ customElements.define(
                         return;
                     }
                 });
-
-            on(input, 'input', (e) => {
-                const value = (e.target as HTMLInputElement).value;
-                const isValid = value.length >= minlength;
-                input.classList.toggle('loading', isValid);
-                input.dispatchEvent(new CustomEvent(isValid ? 'search' : 'search-cancel'));
-            });
         }
     }
 );
@@ -112,14 +104,14 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
 
     const rsvpContainer = qS('#rsvp')!;
 
-    function statusGo(status: string) {
+    function setStatus(status: string) {
         const [name, value] = status!.split('-');
         rsvpContainer.dataset[name] = value;
     }
 
     qA('[data-go]').forEach((el) => {
         on(el, 'click', () => {
-            statusGo(el.dataset.go!);
+            setStatus(el.dataset.go!);
         });
     });
 
@@ -146,39 +138,60 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
     const codeFormField = qS<HTMLElement>('#code fieldset')!;
     const codeFormInput = qS<HTMLInputElement>('#code input')!;
 
-    on(codeFormInput, 'search', async () => {
-        codeFormInput.classList.toggle('loading', true);
-        const codeResult = await codeLookup(codeFormInput.value);
-        codeFormInput.classList.toggle('loading', false);
+    if (window.location.pathname.match(/\/[\d]+/)) {
+        window.location.hash = 'rsvp';
+        const code = window.location.pathname.substring(1);
+        codeFormInput.value = code;
+        setTimeout(() => {
+            codeFormInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }, 500);
+    }
 
-        codeFormField.classList.toggle('hasError', !codeResult);
+    on(codeFormInput, 'input', async () => {
+        const value = codeFormInput.value;
 
-        if (codeResult) {
-            window.location.href = '#rsvp';
+        codeFormInput.classList.remove('loading');
+        codeFormField.classList.remove('hasError');
 
-            statusGo('code-success');
-
-            const { name, email, message, song, song_id, guests, estimated_guests, attending, code } =
-                codeResult;
-
-            qS('[data-name-display] span')!.innerText = name;
-
-            qS<HTMLInputElement>('[name="code"]')!.value = code;
-            qS<HTMLInputElement>('[name="email"]')!.value = email;
-            qS<HTMLInputElement>('[name="message"]')!.value = message;
-            qS<HTMLInputElement>('[name="name"]')!.value = name;
-            qS<HTMLInputElement>('[name="song"]')!.value = song;
-            qS<HTMLInputElement>('[name="song_id"]')!.value = song_id;
-
-            const guestCount = guests || estimated_guests;
-            const guestRadio = qS<HTMLInputElement>(`[name="guests"][value="${guestCount}"]`);
-            if (guestRadio) guestRadio.checked = true;
-
-            const attendingRadio = qS<HTMLInputElement>(`[name="attending"][value="${attending}"]`);
-            if (attendingRadio) attendingRadio.checked = true;
-
-            responseFormOnUpdate();
+        if (value.length !== 4) {
+            return;
         }
+
+        codeFormInput.classList.add('loading');
+        const response = await codeLookup(codeFormInput.value);
+        codeFormInput.classList.remove('loading');
+
+        if (response.code !== codeFormInput.value) return;
+
+        if (!response.result) {
+            codeFormField.classList.add('hasError');
+            return;
+        }
+
+        window.location.href = '#rsvp';
+
+        setStatus('code-success');
+
+        const { name, email, message, song, song_id, guests, estimated_guests, attending, code } =
+            response.result;
+
+        qS('[data-name-display] span')!.innerText = name;
+
+        qS<HTMLInputElement>('[name="code"]')!.value = code || '';
+        qS<HTMLInputElement>('[name="email"]')!.value = email || '';
+        qS<HTMLInputElement>('[name="message"]')!.value = message || '';
+        qS<HTMLInputElement>('[name="name"]')!.value = name || '';
+        qS<HTMLInputElement>('[name="song"]')!.value = song || '';
+        qS<HTMLInputElement>('[name="song_id"]')!.value = song_id || '';
+
+        const guestCount = guests || estimated_guests;
+        const guestRadio = qS<HTMLInputElement>(`[name="guests"][value="${guestCount}"]`);
+        if (guestRadio) guestRadio.checked = true;
+
+        const attendingRadio = qS<HTMLInputElement>(`[name="attending"][value="${attending}"]`);
+        if (attendingRadio) attendingRadio.checked = true;
+
+        responseFormOnUpdate();
     });
 
     on(responseForm, 'change', responseFormOnUpdate);
@@ -199,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
         submitRSVP(formData).then((response) => {
             rsvpContainer.classList.remove('busy');
 
-            statusGo(response?.error ? 'submit-error' : 'submit-success');
+            setStatus(response?.error ? 'submit-error' : 'submit-success');
             console.log(response);
         });
     });
@@ -228,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
         const instructions = qS('#spotify .instructions')!;
         const noResults = qS('#spotify .no-results')!;
 
-        on(searchInput, 'search', () => {
+        on(searchInput, 'input', () => {
             handleSearch(searchInput.value.toLowerCase());
         });
 
@@ -281,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
                 toggle(instructions, !!results?.length);
 
                 toggle(noResults, !results?.length);
-            }, 1000);
+            }, 500);
         }
     })();
 

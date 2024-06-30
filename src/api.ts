@@ -1,12 +1,29 @@
 const apiUrl = 'https://api.heyreed.com';
 
-export function codeLookup(code: string) {
-    if (code.length !== 4) return null;
+const cachedResults: Record<string, any> = {};
 
-    return fetch(`${apiUrl}/rsvp-check?id=${code}`)
-        .then(async (response) => response?.json())
-        .then((json) => (json.error ? null : json))
-        .catch(() => null);
+const cacheFetch = async (url: string, options?: RequestInit) => {
+    if (!(url in cachedResults)) {
+        try {
+            const response = await (await fetch(url, options)).json();
+
+            cachedResults[url] = response.error ? null : response;
+        } catch {
+            cachedResults[url] = null;
+        }
+    }
+
+    return cachedResults[url];
+};
+
+export async function codeLookup(code: string): Promise<{
+    code: string;
+    result: any;
+}> {
+    return {
+        code,
+        result: code.length !== 4 ? null : await cacheFetch(`${apiUrl}/rsvp-check?id=${code}`),
+    };
 }
 
 export async function submitRSVP(formData: {
