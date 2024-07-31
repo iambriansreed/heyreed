@@ -873,6 +873,13 @@ section.rsvp {
             display: flex;
         }
     }
+
+    .disposable-camera {
+        img {
+            margin: 1rem auto;
+            max-width: 10rem;
+        }
+    }
 }
 
 @keyframes loading-ring {
