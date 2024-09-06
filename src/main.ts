@@ -1,5 +1,4 @@
-import { codeLookup, getSongResults, submitRSVP } from './api';
-import { generateSVGs, qS, qA, toggle, on } from './utils';
+import { generateSVGs, qS, toggle, on } from './utils';
 import './main.scss';
 import svgs from './svgs';
 
